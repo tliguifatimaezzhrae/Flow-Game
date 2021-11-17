@@ -3,8 +3,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import java.util.Observer;
 
-public class VueControleurGrille extends JFrame {
+public class VueControleurGrille extends JFrame implements Observer{
     private static final int PIXEL_PER_SQUARE = 60;
     // tableau de cases : i, j -> case
     private VueCase[][] tabCV;
