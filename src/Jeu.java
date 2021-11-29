@@ -39,6 +39,20 @@ public class Jeu extends Observable{
     	chemin.add(c);
     }
     
+    public void getArrivee() {
+    	System.out.println(arrivee.toString());
+    }
+    
+    public void getDepart() {
+    	System.out.println(depart.toString());
+    }
+    
+    public void getChemin() {
+    	for(CaseModele c : chemin) {
+    		System.out.println(c.toString());
+    	}
+    }
+    
 	
     
 

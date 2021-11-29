@@ -9,6 +9,7 @@ import java.util.Observer;
 public class VueControleurGrille extends JFrame implements Observer{
     private static final int PIXEL_PER_SQUARE = 60;
     private Jeu jeu;
+    private boolean etatSouris = false;
     // tableau de cases : i, j -> case
     private VueCase[][] tabCV;
     // hashmap : case -> i, j
@@ -39,13 +40,13 @@ public class VueControleurGrille extends JFrame implements Observer{
                     @Override
                     public void mousePressed(MouseEvent e) {
                         //Point p = hashmap.get(e.getSource()); // (*) permet de récupérer les coordonnées d'une caseVue
-
-
+                    	etatSouris = true;
                     	VueCase v = (VueCase) e.getSource();
-                        ((VueCase) e.getSource()).getCaseM().rndType();
+
+                    	((VueCase) e.getSource()).getCaseM().rndType();
                         System.out.println("mousePressed : " + e.getSource());
-                        System.out.println(v);
                         jeu.setDepart(v.getCaseM());
+                        jeu.addCase(v.getCaseM());
 
                     }
 
@@ -56,6 +57,9 @@ public class VueControleurGrille extends JFrame implements Observer{
                         VueCase v = (VueCase) currentComponent;
                         
                         System.out.println("mouseEntered : " + e.getSource());
+                        if(etatSouris) {
+                            jeu.addCase(v.getCaseM());
+                        }
                         jeu.setArrive(v.getCaseM());
                     }
 
@@ -63,11 +67,10 @@ public class VueControleurGrille extends JFrame implements Observer{
                     @Override
                     public void mouseReleased(MouseEvent e) {
                         // (**) - voir commentaire currentComponent
+                    	etatSouris = false;
                         VueCase v = (VueCase) currentComponent;
                         
-                        System.out.println("mouseReleased : " + currentComponent);
-                        jeu.addCase(v.getCaseM());
-                    }
+                        System.out.println("mouseReleased : " + currentComponent);                    }
                 });
 
 
