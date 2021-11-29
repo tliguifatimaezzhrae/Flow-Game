@@ -9,7 +9,8 @@ public class CaseModele{
     public CaseModele(int _x, int _y) {
         x = _x;
         y = _y;
-        rndType();
+        type = CaseType.empty;
+        //rndType();
     }
 
     public void rndType() {

@@ -27,11 +27,13 @@ public class VueControleurGrille extends JFrame implements Observer{
 
         jeu = new Jeu(size);
         JPanel contentPane = new JPanel(new GridLayout(size, size));
-
+        CaseModele[][] puzzle = new CaseModele[size][size];
+        puzzle = jeu.initPuzzle();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-
+            	
                 tabCV[i][j] = new VueCase(i, j, jeu);
+                tabCV[i][j].getCaseM().setType(puzzle[i][j].getType());
                 contentPane.add(tabCV[i][j]);
 
                 hashmap.put(tabCV[i][j], new Point(j, i));
@@ -85,7 +87,7 @@ public class VueControleurGrille extends JFrame implements Observer{
 	
     public static void main(String[] args) {
 
-        VueControleurGrille vue = new VueControleurGrille(6);
+        VueControleurGrille vue = new VueControleurGrille(3);
 
         vue.setVisible(true);
 

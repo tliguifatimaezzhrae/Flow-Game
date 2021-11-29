@@ -53,6 +53,29 @@ public class Jeu extends Observable{
     	}
     }
     
+    public CaseModele[][] initPuzzle() {
+    	CaseModele[][] tab = new CaseModele[3][3];
+    	for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                tab[i][j] = new CaseModele(i, j);
+            }
+    	}
+    	tab[0][1].setType(CaseType.S1);
+    	tab[2][0].setType(CaseType.S1);
+    	tab[0][2].setType(CaseType.S2);
+    	tab[2][2].setType(CaseType.S2);
+    	
+    	for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+            	if(tab[i][j].getType() == null) {
+            		tab[i][j].setType(CaseType.empty);
+            	}
+            }
+    	}
+    	
+    	return tab;
+    }
+    
 	
     
 
