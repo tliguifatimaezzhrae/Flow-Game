@@ -41,8 +41,11 @@ public class VueControleurGrille extends JFrame implements Observer{
                         //Point p = hashmap.get(e.getSource()); // (*) permet de récupérer les coordonnées d'une caseVue
 
 
-                        ((VueCase) e.getSource()).caseM.rndType();
+                    	VueCase v = (VueCase) e.getSource();
+                        ((VueCase) e.getSource()).getCaseM().rndType();
                         System.out.println("mousePressed : " + e.getSource());
+                        System.out.println(v);
+                        jeu.setDepart(v.getCaseM());
 
                     }
 
@@ -50,14 +53,20 @@ public class VueControleurGrille extends JFrame implements Observer{
                     public void mouseEntered(MouseEvent e) {
                         // (**) - voir commentaire currentComponent
                         currentComponent = (JComponent) e.getSource();
+                        VueCase v = (VueCase) currentComponent;
+                        
                         System.out.println("mouseEntered : " + e.getSource());
+                        jeu.setArrive(v.getCaseM());
                     }
 
 
                     @Override
                     public void mouseReleased(MouseEvent e) {
                         // (**) - voir commentaire currentComponent
+                        VueCase v = (VueCase) currentComponent;
+                        
                         System.out.println("mouseReleased : " + currentComponent);
+                        jeu.addCase(v.getCaseM());
                     }
                 });
 

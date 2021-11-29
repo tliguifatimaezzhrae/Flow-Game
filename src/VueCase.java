@@ -8,14 +8,17 @@ import java.util.Random;
 public class VueCase extends JPanel {
 	private int x;
 	private int y;
-	public CaseModele caseM;
+	private CaseModele caseM;
 	
     public VueCase(int x, int y, Jeu j) {
     	caseM = j.getCase(x, y);
     	this.x = x;
     	this.y = y;
-    	caseM.rndType();
     	repaint();
+    }
+    
+    public CaseModele getCaseM() {
+    	return caseM;
     }
 
     private void drawNoon(Graphics g) {
