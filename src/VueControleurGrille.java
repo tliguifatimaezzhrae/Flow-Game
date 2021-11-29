@@ -57,8 +57,10 @@ public class VueControleurGrille extends JFrame implements Observer{
                         // (**) - voir commentaire currentComponent
                         currentComponent = (JComponent) e.getSource();
                         VueCase v = (VueCase) currentComponent;
+                        int x = e.getX();
+                        int y = e.getY();
                         
-                        System.out.println("mouseEntered : " + e.getSource());
+                        System.out.println("mouseEntered : " + e.getSource() + "position : " + x +" " + y);
                         if(etatSouris) {
                             jeu.addCase(v.getCaseM());
                         }

@@ -22,6 +22,8 @@ public class Jeu extends Observable{
             }
     	}
     }
+    
+    //pour verifier case voisine il faut faire +1 ou -1 sur l'abscisse OU l'ordonnée
 
     public CaseModele getCase(int i, int j) {
     	return tabJeu[i][j];
