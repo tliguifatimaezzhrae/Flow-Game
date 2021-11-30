@@ -10,47 +10,65 @@ public class Jeu extends Observable{
     private CaseModele depart;
     private CaseModele arrivee;
     private List<CaseModele> chemin = new ArrayList<CaseModele>();
-    private HashMap<CaseModele, Point> cheminH;
+    //private HashMap<CaseModele, Point> cheminH;  //inutile pour le moment penser à l'enlever avec tout ce qui est en rapport
     // hashmap : case -> i, j
     private HashMap<CaseModele, Point> hashmap; // voir (*)
     
     public Jeu(int size) {
     	tabJeu = new CaseModele[size][size];
-        cheminH = new HashMap<CaseModele, Point>();
+        hashmap = new HashMap<CaseModele, Point>();
     	for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
 
                 tabJeu[i][j] = new CaseModele(i, j);
+                hashmap.put(tabJeu[i][j], new Point(j, i));
             }
     	}
     }
     
     //pour verifier case voisine il faut faire +1 ou -1 sur l'abscisse OU l'ordonnée
 
-    public void dessineMotif(CaseModele c) {
-    	int index = chemin.indexOf(c);
+    public void dessineMotif(CaseModele caseApres) {
+    	int index = chemin.indexOf(caseApres);
     	CaseModele caseToPaint = chemin.get(index - 1);
-    	if(!caseToPaint.getType().equals(CaseType.S1) || !caseToPaint.getType().equals(CaseType.S2) || !caseToPaint.getType().equals(CaseType.S3) || !caseToPaint.getType().equals(CaseType.S4) || !caseToPaint.getType().equals(CaseType.S5))
-    		caseToPaint.setType(choixMotif(cheminH.get(caseToPaint), cheminH.get(c)));
+    	if(index - 2 >= 0) {
+    		CaseModele caseAvant = chemin.get(index - 2);
+    		caseToPaint.setType(choixMotif(hashmap.get(caseAvant), hashmap.get(caseToPaint), hashmap.get(caseApres)));
+    	}
     }
 
-    private CaseType choixMotif(Point entree, Point sortie) {
-    	if(entree.getX() == 0 && sortie.getY() == 46)
+    private CaseType choixMotif(Point caseAvant, Point caseCourante, Point caseApres) {
+    	String[] dir = new String[2];
+    	dir[0] = direction(caseAvant, caseCourante);
+    	dir[1] = direction(caseCourante, caseApres);
+    	if((dir[0].equals("B") && dir[1].equals("G")) || (dir[0].equals("D") && dir[1].equals("H")))
     		return CaseType.h0v0;
-    	if(entree.getX() == 0 && sortie.getY() == 0)
+    	if((dir[0].equals("D") && dir[1].equals("B")) || (dir[0].equals("H") && dir[1].equals("G")))
     		return CaseType.h0v1;
-    	if(entree.getY() == 0 && sortie.getX() == 0)
+    	if((dir[0].equals("B") && dir[1].equals("D")) || (dir[0].equals("G") && dir[1].equals("H")))
     		return CaseType.h1v0;
-    	if(entree.getX() == 54 && sortie.getY() == 0)
+    	if((dir[0].equals("G") && dir[1].equals("B")) || (dir[0].equals("H") && dir[1].equals("D")))
     		return CaseType.h1v1;
-    	if(entree.getX() == 0 && sortie.getX() == 0)
+    	if((dir[0].equals("G") && dir[1].equals("G")) || (dir[0].equals("D") && dir[1].equals("D")))
     		return CaseType.h0h1;
-    	if(entree.getY() == 0 && sortie.getY() == 0)
+    	if((dir[0].equals("B") && dir[1].equals("B")) || (dir[0].equals("H") && dir[1].equals("H")) )
     		return CaseType.v0v1;
     	
     	return CaseType.empty;
-    	
     }
+    
+    private String direction(Point case1, Point case2) {
+    	if(case2.getX() == case1.getX()-1 && case1.getY() == case2.getY())
+    		return "G";
+    	if(case2.getX() == case1.getX()+1 && case1.getY() == case2.getY())
+    		return "D";
+    	if(case1.getX() == case2.getX() && case2.getY() == case1.getY()-1)
+    		return "B";
+    	if(case1.getX() == case2.getX() && case2.getY() == case1.getY()+1)
+    		return "H";
+    	return null;
+    }
+    
     public CaseModele getCase(int i, int j) {
     	return tabJeu[i][j];
     }
@@ -67,9 +85,9 @@ public class Jeu extends Observable{
     	chemin.add(c);
     }
     
-    public void addCoordonnees(CaseModele c, Point p) {
+    /*public void addCoordonnees(CaseModele c, Point p) {
     	cheminH.put(c, p);
-    }
+    }*/
     
     public void getArrivee() {
     	System.out.println(arrivee.toString());
@@ -83,6 +101,10 @@ public class Jeu extends Observable{
     	for(CaseModele c : chemin) {
     		System.out.println(c.toString());
     	}
+    }
+    
+    public void videChemin() {
+    	chemin.clear();
     }
     
     public CaseModele[][] initPuzzle() {
