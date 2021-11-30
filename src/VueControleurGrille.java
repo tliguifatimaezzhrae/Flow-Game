@@ -9,7 +9,7 @@ import java.util.Observer;
 public class VueControleurGrille extends JFrame implements Observer{
     private static final int PIXEL_PER_SQUARE = 60;
     private Jeu jeu;
-    private boolean etatSouris = false;
+    private boolean etatSouris = false;	//pour savoir si la souris est pr�ss�e
     // tableau de cases : i, j -> case
     private VueCase[][] tabCV;
     // hashmap : case -> i, j
@@ -18,7 +18,12 @@ public class VueControleurGrille extends JFrame implements Observer{
     // Afin d'accéder au composant sur lequel le bouton de souris est relaché, on le conserve avec la variable currentComponent à
     // chaque entrée dans un composant - voir (**)
     private JComponent currentComponent;
-
+    
+/* arriv� par le haut : y = 0
+ * par le bas : y = 46
+ * par la droite : x = 54
+ * par la gauche : x = 0
+ * */
     public VueControleurGrille(int size) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
@@ -44,11 +49,14 @@ public class VueControleurGrille extends JFrame implements Observer{
                         //Point p = hashmap.get(e.getSource()); // (*) permet de récupérer les coordonnées d'une caseVue
                     	etatSouris = true;
                     	VueCase v = (VueCase) e.getSource();
-
+                        int x = e.getX();
+                        int y = e.getY();
+                        
                     	((VueCase) e.getSource()).getCaseM().rndType();
                         System.out.println("mousePressed : " + e.getSource());
                         jeu.setDepart(v.getCaseM());
                         jeu.addCase(v.getCaseM());
+                        jeu.addCoordonnees(v.getCaseM(), new Point(x,y));
 
                     }
 
@@ -63,6 +71,9 @@ public class VueControleurGrille extends JFrame implements Observer{
                         System.out.println("mouseEntered : " + e.getSource() + "position : " + x +" " + y);
                         if(etatSouris) {
                             jeu.addCase(v.getCaseM());
+                            jeu.addCoordonnees(v.getCaseM(), new Point(x,y));
+                            jeu.dessineMotif(v.getCaseM());
+                            repaint();
                         }
                         jeu.setArrive(v.getCaseM());
                     }
