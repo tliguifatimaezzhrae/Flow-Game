@@ -33,11 +33,11 @@ public class Jeu extends Observable{
     	CaseModele caseToPaint = chemin.get(index - 1);
     	if(index - 2 >= 0) {
     		CaseModele caseAvant = chemin.get(index - 2);
-    		caseToPaint.setType(choixMotif(hashmap.get(caseAvant), hashmap.get(caseToPaint), hashmap.get(caseApres)));
+    		caseToPaint.setType(choixMotif(caseAvant, caseToPaint, caseApres));
     	}
     }
 
-    private CaseType choixMotif(Point caseAvant, Point caseCourante, Point caseApres) {
+    private CaseType choixMotif(CaseModele caseAvant, CaseModele caseCourante, CaseModele caseApres) {
     	String[] dir = new String[2];
     	dir[0] = direction(caseAvant, caseCourante);
     	dir[1] = direction(caseCourante, caseApres);
@@ -57,15 +57,15 @@ public class Jeu extends Observable{
     	return CaseType.empty;
     }
     
-    private String direction(Point case1, Point case2) {
+    private String direction(CaseModele case1, CaseModele case2) {
     	if(case2.getX() == case1.getX()-1 && case1.getY() == case2.getY())
-    		return "G";
-    	if(case2.getX() == case1.getX()+1 && case1.getY() == case2.getY())
-    		return "D";
-    	if(case1.getX() == case2.getX() && case2.getY() == case1.getY()-1)
-    		return "B";
-    	if(case1.getX() == case2.getX() && case2.getY() == case1.getY()+1)
     		return "H";
+    	if(case2.getX() == case1.getX()+1 && case1.getY() == case2.getY())
+    		return "B";
+    	if(case1.getX() == case2.getX() && case2.getY() == case1.getY()-1)
+    		return "G";
+    	if(case1.getX() == case2.getX() && case2.getY() == case1.getY()+1)
+    		return "D";
     	return null;
     }
     
