@@ -32,15 +32,24 @@ public class Jeu extends Observable{
     	int index = chemin.indexOf(caseApres);
     	CaseModele caseToPaint = chemin.get(index - 1);
     	if(index - 2 >= 0) {
-    		CaseModele caseAvant = chemin.get(index - 2);
-    		caseToPaint.setType(choixMotif(caseAvant, caseToPaint, caseApres));
+        	if(caseToPaint.getType() == CaseType.S1 || caseToPaint.getType() == CaseType.S2 || caseToPaint.getType() == CaseType.S3 || caseToPaint.getType() == CaseType.S4 || caseToPaint.getType() == CaseType.S5) {
+        		detruitChemin();
+        		chemin.clear();
+        		setChanged();
+        		notifyObservers();
+        	}else {
+        		CaseModele caseAvant = chemin.get(index - 2);
+        		caseToPaint.setType(choixMotif(caseAvant, caseToPaint, caseApres));
+        		setChanged();
+        		notifyObservers();
+        	}
     	}
     }
 
-    private CaseType choixMotif(CaseModele caseAvant, CaseModele caseCourante, CaseModele caseApres) {
+    private CaseType choixMotif(CaseModele caseAvant, CaseModele caseToPaint, CaseModele caseApres) {
     	String[] dir = new String[2];
-    	dir[0] = direction(caseAvant, caseCourante);
-    	dir[1] = direction(caseCourante, caseApres);
+    	dir[0] = direction(caseAvant, caseToPaint);
+    	dir[1] = direction(caseToPaint, caseApres);
     	if((dir[0].equals("B") && dir[1].equals("G")) || (dir[0].equals("D") && dir[1].equals("H")))
     		return CaseType.h0v0;
     	if((dir[0].equals("D") && dir[1].equals("B")) || (dir[0].equals("H") && dir[1].equals("G")))
@@ -68,6 +77,8 @@ public class Jeu extends Observable{
     		return "D";
     	return null;
     }
+    
+    
     
     public CaseModele getCase(int i, int j) {
     	return tabJeu[i][j];
@@ -105,6 +116,26 @@ public class Jeu extends Observable{
     
     public void videChemin() {
     	chemin.clear();
+    }
+    
+    public void detruitChemin() {
+    	for(CaseModele c : chemin) {
+    		switch(c.getType()) {
+    		case S1 : 
+    			break;
+    		case S2:
+    			break;
+    		case S3:
+    			break;
+    		case S4:
+    			break;
+    		case S5:
+    			break;
+			default :
+				c.setType(CaseType.empty);
+				break;
+    		}
+    	}
     }
     
     public CaseModele[][] initPuzzle() {
