@@ -7,14 +7,17 @@ import java.util.*;
 public class Jeu extends Observable{
     // tableau de cases : i, j -> case
     private CaseModele[][] tabJeu;
+    private int size;
     private CaseModele depart;
     private CaseModele arrivee;
     private List<CaseModele> chemin = new ArrayList<CaseModele>();
+    private List<List<CaseModele>> chemins = new ArrayList<List<CaseModele>>();
     //private HashMap<CaseModele, Point> cheminH;  //inutile pour le moment penser à l'enlever avec tout ce qui est en rapport
     // hashmap : case -> i, j
     private HashMap<CaseModele, Point> hashmap; // voir (*)
     
     public Jeu(int size) {
+    	this.size = size;
     	tabJeu = new CaseModele[size][size];
         hashmap = new HashMap<CaseModele, Point>();
     	for (int i = 0; i < size; i++) {
@@ -28,6 +31,30 @@ public class Jeu extends Observable{
     
     //pour verifier case voisine il faut faire +1 ou -1 sur l'abscisse OU l'ordonnée
 
+    public boolean verifDepartChemin() {
+    	if(depart.getType() == CaseType.S1 || depart.getType() == CaseType.S2 || depart.getType() == CaseType.S3 || depart.getType() == CaseType.S4 || depart.getType() == CaseType.S5)
+    		return true;
+    	else 
+    		return false;
+    }
+    
+    public boolean verifChemin() {
+    	if(depart.getType() == arrivee.getType())
+    		return true;
+    	else 
+    		return false;
+    }
+    
+    public boolean verifPuzzle() {
+    	for(int i=0; i<size; i++) {
+    		for(int j=0; j<size; j++) {
+    			if(tabJeu[i][j].getType() == CaseType.empty )
+    				return false;
+    		}
+    	}
+    	return true;
+    }
+    
     public void dessineMotif(CaseModele caseApres) {
     	int index = chemin.indexOf(caseApres);
     	CaseModele caseToPaint = chemin.get(index - 1);
