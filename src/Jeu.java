@@ -10,8 +10,10 @@ public class Jeu extends Observable{
     private int size;
     private CaseModele depart;
     private CaseModele arrivee;
-    private List<CaseModele> chemin = new ArrayList<CaseModele>();
-    private List<List<CaseModele>> chemins = new ArrayList<List<CaseModele>>();
+    private ArrayList<CaseModele> chemin = new ArrayList<CaseModele>();
+    private List<ArrayList<CaseModele>> listeChemins = new ArrayList<ArrayList<CaseModele>>();
+    private List<CaseModele> casesChemins = new ArrayList<CaseModele>();
+    private static int nbCheminsAttendus;
     //private HashMap<CaseModele, Point> cheminH;  //inutile pour le moment penser à l'enlever avec tout ce qui est en rapport
     // hashmap : case -> i, j
     private HashMap<CaseModele, Point> hashmap; // voir (*)
@@ -28,9 +30,8 @@ public class Jeu extends Observable{
             }
     	}
     }
-    
-    //pour verifier case voisine il faut faire +1 ou -1 sur l'abscisse OU l'ordonnée
 
+    //verifie la case de départ d'un chemin
     public boolean verifDepartChemin() {
     	if(depart.getType() == CaseType.S1 || depart.getType() == CaseType.S2 || depart.getType() == CaseType.S3 || depart.getType() == CaseType.S4 || depart.getType() == CaseType.S5)
     		return true;
@@ -38,28 +39,55 @@ public class Jeu extends Observable{
     		return false;
     }
     
-    public boolean verifChemin() {
-    	if(depart.getType() == arrivee.getType())
-    		return true;
-    	else 
-    		return false;
+    //vérifie validité d'un chemin
+    public void verifChemin() {
+    	if(depart.getType() == arrivee.getType()) {
+    		listeChemins.add(chemin);
+    		for(CaseModele c : chemin) {
+    			casesChemins.add(c);
+    		}
+    		chemin.clear();
+    	}
+    	
+    	else {
+    		detruitChemin();
+    		chemin.clear();
+			setChanged();
+			notifyObservers();
+    	}
     }
     
     public boolean verifPuzzle() {
-    	for(int i=0; i<size; i++) {
-    		for(int j=0; j<size; j++) {
-    			if(tabJeu[i][j].getType() == CaseType.empty )
-    				return false;
-    		}
+    	if(nbCheminsAttendus == listeChemins.size()) {
+	    	for(int i=0; i<size; i++) {
+	    		for(int j=0; j<size; j++) {
+	    			if(tabJeu[i][j].getType() == CaseType.empty )
+	    				return false;
+	    		}
+	    	}
     	}
+    	else
+    		return false;
+    	
     	return true;
+    }
+    
+    public boolean verifVoisin(CaseModele c1, CaseModele c2) {
+    	if(direction(c1,c2) == null)
+    		return false;
+    	else 
+    		return true;
     }
     
     public void dessineMotif(CaseModele caseApres) {
     	int index = chemin.indexOf(caseApres);
     	CaseModele caseToPaint = chemin.get(index - 1);
+    	if(!verifVoisin(caseToPaint, caseApres)) {
+    		detruitChemin();
+    		chemin.clear();
+    	}
     	if(index - 2 >= 0) {
-        	if(caseToPaint.getType() == CaseType.S1 || caseToPaint.getType() == CaseType.S2 || caseToPaint.getType() == CaseType.S3 || caseToPaint.getType() == CaseType.S4 || caseToPaint.getType() == CaseType.S5) {
+        	if(caseToPaint.getType() != CaseType.empty) {
         		detruitChemin();
         		chemin.clear();
         		setChanged();
@@ -123,6 +151,8 @@ public class Jeu extends Observable{
     	chemin.add(c);
     }
     
+
+    
     /*public void addCoordonnees(CaseModele c, Point p) {
     	cheminH.put(c, p);
     }*/
@@ -141,26 +171,53 @@ public class Jeu extends Observable{
     	}
     }
     
-    public void videChemin() {
+    /*public void videChemin() {
     	chemin.clear();
+    }*/
+    
+    //efface un chemin valide quand on clique dessus
+    public void effaceChemin(CaseModele c) {
+    	int nbC = listeChemins.size();
+    	System.out.println(nbC);
+    	for(int i=0; i<nbC; i++) {
+    		ArrayList<CaseModele> liste = listeChemins.get(i);
+    		System.out.println("for");
+    		if(liste.contains(c)) {
+    			System.out.println("contains c");
+    			for(CaseModele caseC : listeChemins.get(i)) {
+    				if(caseC.getType() == CaseType.S1 || caseC.getType() == CaseType.S2 || caseC.getType() == CaseType.S3 || caseC.getType() == CaseType.S4 || caseC.getType() == CaseType.S5)
+    					continue;
+    				else {
+    					caseC.setType(CaseType.empty);
+    					casesChemins.remove(caseC);
+    				}
+    			}
+    			listeChemins.remove(i);
+        		setChanged();
+        		notifyObservers();
+    		}
+    	}
     }
     
+    //detruit le chemin en cours
     public void detruitChemin() {
     	for(CaseModele c : chemin) {
-    		switch(c.getType()) {
-    		case S1 : 
-    			break;
-    		case S2:
-    			break;
-    		case S3:
-    			break;
-    		case S4:
-    			break;
-    		case S5:
-    			break;
-			default :
-				c.setType(CaseType.empty);
-				break;
+    		if(!casesChemins.contains(c)) {
+	    		switch(c.getType()) {
+	    		case S1 : 
+	    			break;
+	    		case S2:
+	    			break;
+	    		case S3:
+	    			break;
+	    		case S4:
+	    			break;
+	    		case S5:
+	    			break;
+				default :
+					c.setType(CaseType.empty);
+					break;
+	    		}
     		}
     	}
     }
@@ -176,6 +233,7 @@ public class Jeu extends Observable{
     	tab[2][0].setType(CaseType.S1);
     	tab[0][2].setType(CaseType.S2);
     	tab[2][2].setType(CaseType.S2);
+    	nbCheminsAttendus = 2;
     	
     	return tab;
     }

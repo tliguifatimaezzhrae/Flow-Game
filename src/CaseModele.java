@@ -33,6 +33,20 @@ public class CaseModele{
     	return y;
     }
     
+    public boolean equals(Object o) {
+    	if(o == null)
+    		return false;
+    	if(o instanceof CaseModele) {
+    		CaseModele obj = (CaseModele) o;
+    		if(this.x == obj.x && this.y == obj.y && this.type == obj.type)
+    			return true;
+    		else
+    			return false;
+    	}
+    	else
+    		return false;
+    }
+    
     public String toString() {
         return x + ", " + y;
 

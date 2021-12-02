@@ -7,7 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class VueControleurGrille extends JFrame implements Observer{
-    private static final int PIXEL_PER_SQUARE = 60;
+    private static final int PIXEL_PER_SQUARE = 90;
     private Jeu jeu;
     private boolean etatSouris = false;	//pour savoir si la souris est préssée
     // tableau de cases : i, j -> case
@@ -30,6 +30,11 @@ public class VueControleurGrille extends JFrame implements Observer{
         jeu = new Jeu(size);
         jeu.addObserver(this);
         JPanel contentPane = new JPanel(new GridLayout(size, size));
+        JDialog popup = new JDialog(this);
+        popup.setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
+        JLabel jLabel = new JLabel("Bravo");
+        popup.add(jLabel);
+        popup.setVisible(false);
         CaseModele[][] puzzle = new CaseModele[size][size];
         puzzle = jeu.initPuzzle();
         for (int i = 0; i < size; i++) {
@@ -45,7 +50,7 @@ public class VueControleurGrille extends JFrame implements Observer{
                     @Override
                     public void mousePressed(MouseEvent e) {
                         //Point p = hashmap.get(e.getSource()); // (*) permet de rÃ©cupÃ©rer les coordonnÃ©es d'une caseVue
-                    	jeu.videChemin();
+                    	//jeu.videChemin();
 	                    	VueCase v = (VueCase) e.getSource();
 	                        jeu.setDepart(v.getCaseM());
                     	if(jeu.verifDepartChemin()) {
@@ -67,7 +72,6 @@ public class VueControleurGrille extends JFrame implements Observer{
                         if(etatSouris) {
                             jeu.addCase(v.getCaseM());
                             jeu.dessineMotif(v.getCaseM());
-                            jeu.setArrive(v.getCaseM());
                         }
                     }
 
@@ -77,8 +81,23 @@ public class VueControleurGrille extends JFrame implements Observer{
                         // (**) - voir commentaire currentComponent
                     	etatSouris = false;
                         VueCase v = (VueCase) currentComponent;
-                        
-                        System.out.println("mouseReleased : " + currentComponent);                    }
+                        jeu.setArrive(v.getCaseM());
+                        jeu.verifChemin();
+                        System.out.println("mouseReleased : " + currentComponent);
+                        if(jeu.verifPuzzle()) {
+                            popup.setVisible(true);
+                        }
+                        }
+                    
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                    	VueCase v = (VueCase) currentComponent;
+                    	System.out.println("mouseclicked : " + currentComponent);
+                    	if(!etatSouris) {
+                    		System.out.println("laboucle");
+                    		jeu.effaceChemin(v.getCaseM());
+                    	}
+                    }
                 });
 
 
