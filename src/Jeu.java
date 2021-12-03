@@ -50,7 +50,7 @@ public class Jeu extends Observable{
     	}
     	
     	else {
-    		detruitChemin();
+    		detruitCheminCourant();
     		cheminEnCours.clear();
 			setChanged();
 			notifyObservers();
@@ -83,12 +83,12 @@ public class Jeu extends Observable{
     	int index = cheminEnCours.indexOf(caseApres);
     	CaseModele caseToPaint = cheminEnCours.get(index - 1);
     	if(!verifVoisin(caseToPaint, caseApres)) {
-    		detruitChemin();
+    		detruitCheminCourant();
     		cheminEnCours.clear();
     	}
     	if(index - 2 >= 0) {
         	if(caseToPaint.getType() != CaseType.empty) {
-        		detruitChemin();
+        		detruitCheminCourant();
         		cheminEnCours.clear();
         		setChanged();
         		notifyObservers();
@@ -147,7 +147,7 @@ public class Jeu extends Observable{
     	arrivee = a;
     }
     
-    public void addCase(CaseModele c) {
+    public void addCaseCheminEnCours(CaseModele c) {
     	cheminEnCours.add(c);
     }
     
@@ -184,8 +184,8 @@ public class Jeu extends Observable{
     
     //efface un chemin valide quand on clique dessus
     public void effaceChemin(CaseModele c) {
-    	int nbC = listeChemins.size();
-    	System.out.println(nbC);
+    	//int nbC = listeChemins.size();
+    	//System.out.println(nbC);
     	for(Chemin chem : listeChemins) {
     		System.out.println("Chemin : ");
     		chem.afficheChemin();
@@ -194,7 +194,7 @@ public class Jeu extends Observable{
     			System.out.println("contains c");
     			for(CaseModele caseC : chem.getChemin()) {
     	    		System.out.println("2e for");
-    				if(typeNum(caseC.getType()))
+    	    		if(typeNum(caseC.getType()))
     					continue;
     				else {
     					caseC.setType(CaseType.empty);
@@ -209,27 +209,18 @@ public class Jeu extends Observable{
     }
     
     //detruit le chemin en cours
-    public void detruitChemin() {
+    public void detruitCheminCourant() {
     	for(CaseModele c : cheminEnCours) {
     		if(!casesChemins.contains(c)) {
-	    		switch(c.getType()) {
-	    		case S1 : 
-	    			break;
-	    		case S2:
-	    			break;
-	    		case S3:
-	    			break;
-	    		case S4:
-	    			break;
-	    		case S5:
-	    			break;
-				default :
+    			if(typeNum(c.getType()))
+					continue;
+				else {
 					c.setType(CaseType.empty);
-					break;
+				}
 	    		}
     		}
     	}
-    }
+    
     
     public CaseModele[][] initPuzzle() {
     	CaseModele[][] tab = new CaseModele[3][3];

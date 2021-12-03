@@ -57,7 +57,7 @@ public class VueControleurGrille extends JFrame implements Observer{
 	                    	etatSouris = true;
 	                    	
 	                        System.out.println("mousePressed : " + e.getSource());
-	                        jeu.addCase(v.getCaseM());
+	                        jeu.addCaseCheminEnCours(v.getCaseM());
                     	}
 
                     }
@@ -70,7 +70,7 @@ public class VueControleurGrille extends JFrame implements Observer{
                         
                         System.out.println("mouseEntered : " + e.getSource());
                         if(etatSouris) {
-                            jeu.addCase(v.getCaseM());
+                            jeu.addCaseCheminEnCours(v.getCaseM());
                             jeu.dessineMotif(v.getCaseM());
                         }
                     }
