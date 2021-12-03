@@ -1,7 +1,4 @@
 import java.awt.Point;
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.*;
 
 public class Jeu extends Observable{
@@ -10,8 +7,8 @@ public class Jeu extends Observable{
     private int size;
     private CaseModele depart;
     private CaseModele arrivee;
-    private ArrayList<CaseModele> chemin = new ArrayList<CaseModele>();
-    private List<ArrayList<CaseModele>> listeChemins = new ArrayList<ArrayList<CaseModele>>();
+    private ArrayList<CaseModele> cheminEnCours = new ArrayList<CaseModele>();
+    private List<Chemin> listeChemins = new ArrayList<Chemin>();
     private List<CaseModele> casesChemins = new ArrayList<CaseModele>();
     private static int nbCheminsAttendus;
     //private HashMap<CaseModele, Point> cheminH;  //inutile pour le moment penser à l'enlever avec tout ce qui est en rapport
@@ -33,7 +30,7 @@ public class Jeu extends Observable{
 
     //verifie la case de départ d'un chemin
     public boolean verifDepartChemin() {
-    	if(depart.getType() == CaseType.S1 || depart.getType() == CaseType.S2 || depart.getType() == CaseType.S3 || depart.getType() == CaseType.S4 || depart.getType() == CaseType.S5)
+    	if(typeNum(depart.getType()))
     		return true;
     	else 
     		return false;
@@ -41,17 +38,18 @@ public class Jeu extends Observable{
     
     //vérifie validité d'un chemin
     public void verifChemin() {
-    	if(depart.getType() == arrivee.getType()) {
-    		listeChemins.add(chemin);
-    		for(CaseModele c : chemin) {
-    			casesChemins.add(c);
+    	if(depart.getType() == arrivee.getType() && typeNum(depart.getType()) && cheminEnCours.size()>2) {
+    		Chemin c = new Chemin(cheminEnCours);
+    		listeChemins.add(c);
+    		for(CaseModele ca : cheminEnCours) {
+    			casesChemins.add(ca);
     		}
-    		chemin.clear();
+    		cheminEnCours.clear();
     	}
     	
     	else {
     		detruitChemin();
-    		chemin.clear();
+    		cheminEnCours.clear();
 			setChanged();
 			notifyObservers();
     	}
@@ -80,20 +78,20 @@ public class Jeu extends Observable{
     }
     
     public void dessineMotif(CaseModele caseApres) {
-    	int index = chemin.indexOf(caseApres);
-    	CaseModele caseToPaint = chemin.get(index - 1);
+    	int index = cheminEnCours.indexOf(caseApres);
+    	CaseModele caseToPaint = cheminEnCours.get(index - 1);
     	if(!verifVoisin(caseToPaint, caseApres)) {
     		detruitChemin();
-    		chemin.clear();
+    		cheminEnCours.clear();
     	}
     	if(index - 2 >= 0) {
         	if(caseToPaint.getType() != CaseType.empty) {
         		detruitChemin();
-        		chemin.clear();
+        		cheminEnCours.clear();
         		setChanged();
         		notifyObservers();
         	}else {
-        		CaseModele caseAvant = chemin.get(index - 2);
+        		CaseModele caseAvant = cheminEnCours.get(index - 2);
         		caseToPaint.setType(choixMotif(caseAvant, caseToPaint, caseApres));
         		setChanged();
         		notifyObservers();
@@ -148,9 +146,16 @@ public class Jeu extends Observable{
     }
     
     public void addCase(CaseModele c) {
-    	chemin.add(c);
+    	cheminEnCours.add(c);
     }
     
+    public boolean typeNum(CaseType t) {
+    	if(t == CaseType.S1 || t == CaseType.S2 || t == CaseType.S3 || t == CaseType.S4 || t == CaseType.S5) {
+    		return true;
+    	}
+    	else
+    		return false;
+    }
 
     
     /*public void addCoordonnees(CaseModele c, Point p) {
@@ -166,7 +171,7 @@ public class Jeu extends Observable{
     }
     
     public void getChemin() {
-    	for(CaseModele c : chemin) {
+    	for(CaseModele c : cheminEnCours) {
     		System.out.println(c.toString());
     	}
     }
@@ -180,12 +185,12 @@ public class Jeu extends Observable{
     	int nbC = listeChemins.size();
     	System.out.println(nbC);
     	for(int i=0; i<nbC; i++) {
-    		ArrayList<CaseModele> liste = listeChemins.get(i);
+    		Chemin liste = listeChemins.get(i);
     		System.out.println("for");
-    		if(liste.contains(c)) {
+    		if(liste.contient(c)) {
     			System.out.println("contains c");
-    			for(CaseModele caseC : listeChemins.get(i)) {
-    				if(caseC.getType() == CaseType.S1 || caseC.getType() == CaseType.S2 || caseC.getType() == CaseType.S3 || caseC.getType() == CaseType.S4 || caseC.getType() == CaseType.S5)
+    			for(CaseModele caseC : listeChemins.get(i).getChemin()) {
+    				if(typeNum(caseC.getType()))
     					continue;
     				else {
     					caseC.setType(CaseType.empty);
@@ -201,7 +206,7 @@ public class Jeu extends Observable{
     
     //detruit le chemin en cours
     public void detruitChemin() {
-    	for(CaseModele c : chemin) {
+    	for(CaseModele c : cheminEnCours) {
     		if(!casesChemins.contains(c)) {
 	    		switch(c.getType()) {
 	    		case S1 : 
