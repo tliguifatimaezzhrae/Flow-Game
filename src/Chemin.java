@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class Chemin {
-    private ArrayList<CaseModele> chemin;
+    private ArrayList<CaseModele> chemin = new ArrayList<CaseModele>();
     
-    public Chemin(ArrayList<CaseModele> chemin) {
-    	this.chemin = chemin;
+    public Chemin(ArrayList<CaseModele> _chemin) {
+    	chemin.addAll(_chemin);
     }
 	
     public boolean contient(CaseModele c) {
@@ -16,5 +16,11 @@ public class Chemin {
     
     public ArrayList<CaseModele> getChemin(){
     	return chemin;
+    }
+    
+    public void afficheChemin() {
+    	for(CaseModele c : chemin) {
+    		System.out.println(c.toString());
+    	}
     }
 }

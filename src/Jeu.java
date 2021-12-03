@@ -41,7 +41,9 @@ public class Jeu extends Observable{
     	if(depart.getType() == arrivee.getType() && typeNum(depart.getType()) && cheminEnCours.size()>2) {
     		Chemin c = new Chemin(cheminEnCours);
     		listeChemins.add(c);
+    		System.out.println("chemin en cours ajouter dans liste");
     		for(CaseModele ca : cheminEnCours) {
+    			System.out.println(ca.toString());
     			casesChemins.add(ca);
     		}
     		cheminEnCours.clear();
@@ -184,12 +186,14 @@ public class Jeu extends Observable{
     public void effaceChemin(CaseModele c) {
     	int nbC = listeChemins.size();
     	System.out.println(nbC);
-    	for(int i=0; i<nbC; i++) {
-    		Chemin liste = listeChemins.get(i);
-    		System.out.println("for");
-    		if(liste.contient(c)) {
+    	for(Chemin chem : listeChemins) {
+    		System.out.println("Chemin : ");
+    		chem.afficheChemin();
+    		System.out.println("first for");
+    		if(chem.contient(c)) {
     			System.out.println("contains c");
-    			for(CaseModele caseC : listeChemins.get(i).getChemin()) {
+    			for(CaseModele caseC : chem.getChemin()) {
+    	    		System.out.println("2e for");
     				if(typeNum(caseC.getType()))
     					continue;
     				else {
@@ -197,7 +201,7 @@ public class Jeu extends Observable{
     					casesChemins.remove(caseC);
     				}
     			}
-    			listeChemins.remove(i);
+    			listeChemins.remove(chem);
         		setChanged();
         		notifyObservers();
     		}
