@@ -18,9 +18,4 @@ public class Chemin {
     	return chemin;
     }
     
-    public void afficheChemin() {
-    	for(CaseModele c : chemin) {
-    		System.out.println(c.toString());
-    	}
-    }
 }
