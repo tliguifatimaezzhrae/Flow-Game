@@ -16,18 +16,27 @@ public class VueControleurGrille extends JFrame implements Observer{
     private JComponent currentComponent;
     public VueControleurGrille(int size) {
     	this.size = size;
-        tabCV = new VueCase[size][size];
+    	tabCV = new VueCase[size][size];
         jeu = new Jeu(size);
-       
+        
         jeu.addObserver(this);
-       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
         JPanel contentPane = new JPanel(new GridLayout(size, size));
-       JDialog popup = new JDialog(this);
-       popup.setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
-        JLabel jLabel = new JLabel("Bravo vous avez resolu le puzzle ");
+        contentPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //setBackground(Color.ORANGE);
+        contentPane.setBackground(Color.BLACK);
+        JDialog popup = new JDialog(this);
+        popup.setLayout(new BorderLayout());
+       	popup.setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
+        JLabel jLabel = new JLabel("Bravo vous avez resolu le puzzle ", JLabel.CENTER);
+        JButton quitter = new JButton("quitter");
         popup.add(jLabel);
+        popup.add(quitter, BorderLayout.SOUTH);
         popup.setVisible(false);
+        quitter.addActionListener(e -> {
+            this.dispose();
+         });
         CaseModele[][] puzzle = new CaseModele[size][size];
         puzzle = jeu.initPuzzle();
         for (int i = 0; i < size; i++) {

@@ -15,105 +15,96 @@ public class VueCase extends JPanel {
     	caseM = j.getCase(x, y);
     	this.x = x;
     	this.y = y;
-    	repaint();
     }
     
     public CaseModele getCaseM() {
     	return caseM;
     }
-    public  void setCaseM(CaseModele caseM ) {
-    	this.caseM=caseM;
-    }
-    
 
     private void drawNoon(Graphics g) {
-    	//g.setColor(caseM.getColor());
-    	//g.drawRect(50, 35, 150, 150);
-    	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
        g.drawLine(getWidth()/2, getHeight()/2, getWidth()/2, 0);
     }
 
     private void drawNine(Graphics g) {
-    	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-g.drawLine(0, getHeight()/2, getWidth()/2, getHeight()/2);
+    	g.drawLine(0, getHeight()/2, getWidth()/2, getHeight()/2);
     }
 
     private void drawSix(Graphics g) {
        g.drawLine(getWidth()/2, getHeight()/2, getWidth()/2, getHeight());
-  //g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
     }
 
     private void drawThree(Graphics g) {
-    	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-        g.drawLine(getWidth()/2, getHeight()/2, getWidth(), getHeight()/2);
+    	g.drawLine(getWidth()/2, getHeight()/2, getWidth(), getHeight()/2);
     }
 
 
 
     @Override
     public void paintComponent(Graphics g) {
-     g.clearRect(0, 0, getWidth(), getHeight());
-    // Rectangle2D deltaText=g.getFont().getStringBounds("0", g.getFontMetrics().getFontRenderContext());
+	g.setColor(Color.BLACK);
+    g.drawRect(0, 0, getWidth(), getHeight());
+	g.fillRect(0, 0, getWidth(), getHeight());
 
-g.drawRoundRect(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2, 5, 5);
-
+	g.setColor(Color.WHITE);
+	g.drawLine(0, 0, getWidth(), 0);
+	g.drawLine(0,0,0, getHeight());
+	g.setColor(Color.BLUE);
+	
+ 	Rectangle2D deltaText =  g.getFont().getStringBounds("0", g.getFontMetrics().getFontRenderContext()); // "0" utilisé pour gabarit
+ 	
+ 	Graphics2D g1 = (Graphics2D) g;
+	BasicStroke line = new BasicStroke(15.0f);
+	g1.setStroke(line);
         switch(caseM.getType()) {
         case S1 :
-            g.setColor(Color.BLACK);
+            g.setColor(Color.YELLOW);
             g.fillOval(getWidth()/3+5, getHeight()/3 +5,getWidth()/3, getHeight()/3);
             break;
         case S2 :
             g.setColor(Color.RED);
             g.fillOval(getWidth()/3 +5, getHeight()/3 +5,getWidth()/3, getHeight()/3);
             break;
-       
-            case h0v0 :
-            	
-            	
-            	g.setColor(Color.BLACK);
-            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-            	
-                drawNine(g);
-                drawNoon(g);
-                break;
-            case h0v1 :
-            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-            	g.setColor(Color.black);
-                drawNine(g);
-                drawSix(g);
-                break;
-            case h1v0:
-            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-            	g.setColor(Color.BLACK);
-                drawNoon(g);
-                drawThree(g);
-                break;
-            case h1v1 :
-            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-            	g.setColor(Color.BLACK);
-                drawThree(g);
-                drawSix(g);
-               
-                break;
-            case h0h1:
-            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-            	g.setColor(Color.RED);
-                drawThree(g);
-                drawNine(g);
-                break;
-            case v0v1:
-            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-            	g.setColor(Color.RED);
-                drawNoon(g);
-                drawSix(g);
-                break;
-            case cross:
-            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
-                drawNoon(g);
-                drawSix(g);
-                drawThree(g);
-                drawNine(g);
-                break;
+        case S3 :
+            g.drawString("3", getWidth()/2  - (int) deltaText.getCenterX(), getHeight()/2 - (int) deltaText.getCenterY());
+            break;
+        case S4 :
+            g.drawString("4", getWidth()/2  - (int) deltaText.getCenterX(), getHeight()/2 - (int) deltaText.getCenterY());
+            break;
+        case S5 :
+            g.drawString("5", getWidth()/2  - (int) deltaText.getCenterX(), getHeight()/2 - (int) deltaText.getCenterY());
+            break;
+
+        case h0v0 :
+        	drawNine(g);
+            drawNoon(g);
+            break;
+        case h0v1 :
+            drawNine(g);
+            drawSix(g);
+            break;
+        case h1v0:
+            drawNoon(g);
+            drawThree(g);
+            break;
+        case h1v1 :
+            drawThree(g);
+            drawSix(g);
+           
+            break;
+        case h0h1:
+            drawThree(g);
+            drawNine(g);
+            break;
+        case v0v1:
+            drawNoon(g);
+            drawSix(g);
+            break;
+        case cross:
+            drawNoon(g);
+            drawSix(g);
+            drawThree(g);
+            drawNine(g);
+            break;
 
         }
     }

@@ -48,9 +48,6 @@ public class Jeu extends Observable{
     
     public boolean typeNum(CaseType t) {
     	if(t == CaseType.S1 || t == CaseType.S2 || t == CaseType.S3 || t == CaseType.S4 || t == CaseType.S5) {
-
-    		
-    		
     		return true;
     	}
     	else
@@ -67,7 +64,8 @@ public class Jeu extends Observable{
     
     //vérifie validité d'un chemin
     public void verifCheminValide() {
-    	if(depart.getType() == arrivee.getType() && typeNum(depart.getType()) && cheminEnCours.size()>2 && cheminSansCaseVide()) {
+    	System.out.println("verif chemin valide");
+    	if(depart.getType() == arrivee.getType() && typeNum(depart.getType()) && cheminEnCours.size()>2 && cheminSansCaseVide() && depart.equals(cheminEnCours.get(0))) {
     		Chemin chemin = new Chemin(cheminEnCours);
     		listeChemins.add(chemin);
     		for(CaseModele c : cheminEnCours) {
@@ -85,7 +83,7 @@ public class Jeu extends Observable{
     }
     
     private boolean cheminSansCaseVide() {
-    	for(CaseModele c : cheminEnCours) {
+    	for(CaseModele c : cheminEnCours) {    		
     		if(c.getType() == CaseType.empty)
     			return false;
     	}
