@@ -7,29 +7,27 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class VueControleurGrille extends JFrame implements Observer{
-    private static final int PIXEL_PER_SQUARE = 90;
+    private static final int PIXEL_PER_SQUARE = 200;
     private Jeu jeu;
     private boolean etatSouris = false;	//pour savoir si la souris est pressée
     // tableau de cases : i, j -> case
     private VueCase[][] tabCV;
     private int size;
     private JComponent currentComponent;
-    
     public VueControleurGrille(int size) {
     	this.size = size;
         tabCV = new VueCase[size][size];
         jeu = new Jeu(size);
+       
         jeu.addObserver(this);
-        
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
         JPanel contentPane = new JPanel(new GridLayout(size, size));
-        JDialog popup = new JDialog(this);
-        popup.setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
-        JLabel jLabel = new JLabel("Bravo vous avez gagné");
+       JDialog popup = new JDialog(this);
+       popup.setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
+        JLabel jLabel = new JLabel("Bravo vous avez resolu le puzzle ");
         popup.add(jLabel);
         popup.setVisible(false);
-        
         CaseModele[][] puzzle = new CaseModele[size][size];
         puzzle = jeu.initPuzzle();
         for (int i = 0; i < size; i++) {

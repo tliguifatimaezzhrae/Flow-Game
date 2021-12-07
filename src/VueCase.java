@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
+
 // TODO : redéfinir la fonction hashValue() et equals(Object) si vous souhaitez utiliser la hashmap de VueControleurGrille avec VueCase en clef
 
 public class VueCase extends JPanel {
@@ -20,20 +21,30 @@ public class VueCase extends JPanel {
     public CaseModele getCaseM() {
     	return caseM;
     }
+    public  void setCaseM(CaseModele caseM ) {
+    	this.caseM=caseM;
+    }
+    
 
     private void drawNoon(Graphics g) {
-        g.drawLine(getWidth()/2, getHeight()/2, getWidth()/2, 0);
+    	//g.setColor(caseM.getColor());
+    	//g.drawRect(50, 35, 150, 150);
+    	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
+       g.drawLine(getWidth()/2, getHeight()/2, getWidth()/2, 0);
     }
 
     private void drawNine(Graphics g) {
-        g.drawLine(0, getHeight()/2, getWidth()/2, getHeight()/2);
+    	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
+g.drawLine(0, getHeight()/2, getWidth()/2, getHeight()/2);
     }
 
     private void drawSix(Graphics g) {
-        g.drawLine(getWidth()/2, getHeight()/2, getWidth()/2, getHeight());
+       g.drawLine(getWidth()/2, getHeight()/2, getWidth()/2, getHeight());
+  //g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
     }
 
     private void drawThree(Graphics g) {
+    	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
         g.drawLine(getWidth()/2, getHeight()/2, getWidth(), getHeight()/2);
     }
 
@@ -41,54 +52,63 @@ public class VueCase extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.clearRect(0, 0, getWidth(), getHeight());
+     g.clearRect(0, 0, getWidth(), getHeight());
+    // Rectangle2D deltaText=g.getFont().getStringBounds("0", g.getFontMetrics().getFontRenderContext());
 
-        g.drawRoundRect(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2, 5, 5);
-
-        Rectangle2D deltaText =  g.getFont().getStringBounds("0", g.getFontMetrics().getFontRenderContext()); // "0" utilisé pour gabarit
-
+g.drawRoundRect(getWidth()/4, getHeight()/4, getWidth()/2, getHeight()/2, 5, 5);
 
         switch(caseM.getType()) {
-            case S1 :
-                g.drawString("1", getWidth()/2 - (int) deltaText.getCenterX(), getHeight()/2 - (int) deltaText.getCenterY());
-                break;
-            case S2 :
-                g.drawString("2", getWidth()/2  - (int) deltaText.getCenterX(), getHeight()/2 - (int) deltaText.getCenterY());
-                break;
-            case S3 :
-                g.drawString("3", getWidth()/2  - (int) deltaText.getCenterX(), getHeight()/2 - (int) deltaText.getCenterY());
-                break;
-            case S4 :
-                g.drawString("4", getWidth()/2  - (int) deltaText.getCenterX(), getHeight()/2 - (int) deltaText.getCenterY());
-                break;
-            case S5 :
-                g.drawString("5", getWidth()/2  - (int) deltaText.getCenterX(), getHeight()/2 - (int) deltaText.getCenterY());
-                break;
+        case S1 :
+            g.setColor(Color.BLACK);
+            g.fillOval(getWidth()/3+5, getHeight()/3 +5,getWidth()/3, getHeight()/3);
+            break;
+        case S2 :
+            g.setColor(Color.RED);
+            g.fillOval(getWidth()/3 +5, getHeight()/3 +5,getWidth()/3, getHeight()/3);
+            break;
+       
             case h0v0 :
+            	
+            	
+            	g.setColor(Color.BLACK);
+            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
+            	
                 drawNine(g);
                 drawNoon(g);
                 break;
             case h0v1 :
+            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
+            	g.setColor(Color.black);
                 drawNine(g);
                 drawSix(g);
                 break;
             case h1v0:
+            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
+            	g.setColor(Color.BLACK);
                 drawNoon(g);
                 drawThree(g);
                 break;
             case h1v1 :
+            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
+            	g.setColor(Color.BLACK);
                 drawThree(g);
                 drawSix(g);
+               
                 break;
             case h0h1:
+            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
+            	g.setColor(Color.RED);
                 drawThree(g);
                 drawNine(g);
                 break;
             case v0v1:
+            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
+            	g.setColor(Color.RED);
                 drawNoon(g);
                 drawSix(g);
                 break;
             case cross:
+            	//g.fillRect(getWidth()/2-10, 0, 20, getWidth()/2+10);
                 drawNoon(g);
                 drawSix(g);
                 drawThree(g);
@@ -97,7 +117,8 @@ public class VueCase extends JPanel {
 
         }
     }
-    public String toString() {
+     
+        public String toString() {
         return caseM.getX() + ", " + caseM.getY();
 
     }

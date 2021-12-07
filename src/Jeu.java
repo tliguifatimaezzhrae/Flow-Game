@@ -1,5 +1,12 @@
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
+
+import javax.swing.JComponent;
 
 public class Jeu extends Observable{
     // tableau de cases : i, j -> case
@@ -12,6 +19,7 @@ public class Jeu extends Observable{
     private List<CaseModele> casesAllChemins = new ArrayList<CaseModele>();
     private static int nbCheminsAttendus;
     
+
     public Jeu(int size) {
     	this.sizeTab = size;
     	tabJeu = new CaseModele[size][size];
@@ -40,6 +48,9 @@ public class Jeu extends Observable{
     
     public boolean typeNum(CaseType t) {
     	if(t == CaseType.S1 || t == CaseType.S2 || t == CaseType.S3 || t == CaseType.S4 || t == CaseType.S5) {
+
+    		
+    		
     		return true;
     	}
     	else

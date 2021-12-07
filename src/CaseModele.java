@@ -5,8 +5,17 @@ public class CaseModele{
     private int x, y;
     private CaseType type;
 	private static Random rnd = new Random();
+	private int color;
     
-    public CaseModele(int _x, int _y) {
+    public int getColor() {
+		return color;
+	}
+
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	public CaseModele(int _x, int _y) {
         x = _x;
         y = _y;
         type = CaseType.empty;
@@ -46,6 +55,7 @@ public class CaseModele{
     	else
     		return false;
     }
+    
     
     public String toString() {
         return x + ", " + y;
