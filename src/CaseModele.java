@@ -4,26 +4,11 @@ import java.util.Random;
 public class CaseModele{
     private int x, y;
     private CaseType type;
-	private static Random rnd = new Random();
-	private int color;
-    
-    public int getColor() {
-		return color;
-	}
-
-	public void setColor(int color) {
-		this.color = color;
-	}
 
 	public CaseModele(int _x, int _y) {
         x = _x;
         y = _y;
         type = CaseType.empty;
-        //rndType();
-    }
-
-    public void rndType() {
-    	type = CaseType.values()[rnd.nextInt(CaseType.values().length)];
     }
     
     public void setType(CaseType t) {

@@ -17,7 +17,7 @@ public class Jeu extends Observable{
     private ArrayList<CaseModele> cheminEnCours = new ArrayList<CaseModele>();
     private List<Chemin> listeChemins = new ArrayList<Chemin>();
     private List<CaseModele> casesAllChemins = new ArrayList<CaseModele>();
-    private static int nbCheminsAttendus;
+    private int nbCheminsAttendus;
     
 
     public Jeu(int size) {
@@ -64,7 +64,6 @@ public class Jeu extends Observable{
     
     //vérifie validité d'un chemin
     public void verifCheminValide() {
-    	System.out.println("verif chemin valide");
     	if(depart.getType() == arrivee.getType() && typeNum(depart.getType()) && cheminEnCours.size()>2 && cheminSansCaseVide() && depart.equals(cheminEnCours.get(0))) {
     		Chemin chemin = new Chemin(cheminEnCours);
     		listeChemins.add(chemin);
@@ -121,14 +120,14 @@ public class Jeu extends Observable{
 	    		cheminEnCours.clear();
 	    	}
 	    	if(index - 2 >= 0) {
-	        	if(caseToPaint.getType() != CaseType.empty) {
-	        		effaceCheminCourant();
-	        		cheminEnCours.clear();
+	        	if(caseToPaint.getType() == CaseType.empty) {
+	        		CaseModele caseAvant = cheminEnCours.get(index - 2);
+	        		caseToPaint.setType(choixMotif(caseAvant, caseToPaint, caseApres));
 	        		setChanged();
 	        		notifyObservers();
 	        	}else {
-	        		CaseModele caseAvant = cheminEnCours.get(index - 2);
-	        		caseToPaint.setType(choixMotif(caseAvant, caseToPaint, caseApres));
+	        		effaceCheminCourant();
+	        		cheminEnCours.clear();
 	        		setChanged();
 	        		notifyObservers();
 	        	}

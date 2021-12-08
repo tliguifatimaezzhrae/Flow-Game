@@ -24,7 +24,6 @@ public class VueControleurGrille extends JFrame implements Observer{
         setSize(size * PIXEL_PER_SQUARE, size * PIXEL_PER_SQUARE);
         JPanel contentPane = new JPanel(new GridLayout(size, size));
         contentPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        //setBackground(Color.ORANGE);
         contentPane.setBackground(Color.BLACK);
         JDialog popup = new JDialog(this);
         popup.setLayout(new BorderLayout());
@@ -91,10 +90,8 @@ public class VueControleurGrille extends JFrame implements Observer{
                     public void mouseClicked(MouseEvent e) {
                     	VueCase v = (VueCase) currentComponent;
                     	System.out.println("mouseclicked : " + currentComponent);
-                    	
-                    	if(!etatSouris) {
-                    		jeu.detruitCheminValide(v.getCaseM());
-                    	}
+                		jeu.detruitCheminValide(v.getCaseM());
+                    
                     }
                 });
 
